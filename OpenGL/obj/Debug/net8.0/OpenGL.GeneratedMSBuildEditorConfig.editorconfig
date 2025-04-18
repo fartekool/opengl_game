@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = OpenGL
-build_property.ProjectDir = C:\Users\levon\source\repos\OpenGL\OpenGL\
+build_property.ProjectDir = C:\Users\alext\OneDrive\Рабочий стол\game\opengl_game\OpenGL\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

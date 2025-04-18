@@ -30,9 +30,41 @@ namespace OpenGL
         GameObject Wall5;
         GameObject Wall6;
 
+
+        GameObject Box;
+
         int width, height;
 
-        private List<Vector3> SaturnVertices = new List<Vector3>()
+
+
+		private List<Vector3> BoxVertices = new List<Vector3>()
+		{
+			new Vector3(-1f, -1f, -1f),
+			new Vector3(1f, -1f, -1f),
+			new Vector3(-1f, 1f, -1f),
+			new Vector3(1f, 1f, -1f),
+			new Vector3(-1f, -1f, 1f),
+			new Vector3(1f, -1f, 1f),
+			new Vector3(-1f, 1f, 1f),
+			new Vector3(1f, 1f, 1f)
+
+		};
+		private List<Vector2> BoxTexCoords = new List<Vector2>()
+		{
+			new Vector2(0f, 0f),
+			new Vector2(0f, 1f),
+			new Vector2(1f, 0f),
+			new Vector2(1f, 1f),
+
+			new Vector2(0f, 1f),
+			new Vector2(1f, 1f),
+		};
+
+
+
+
+
+		private List<Vector3> SaturnVertices = new List<Vector3>()
         {
             new Vector3(-1f, 0f, 0f),
             new Vector3(1f, 0f, 0f),
@@ -83,6 +115,9 @@ namespace OpenGL
             new Vector2(1f, 1f),
             new Vector2(0f, 1f),
         };
+
+
+
 
 
         public Game (int width, int height): base
@@ -164,7 +199,7 @@ namespace OpenGL
 
         protected override void OnRenderFrame(FrameEventArgs args)
         {
-            GL.ClearColor(0f, 0f, 0f, 1f);
+            GL.ClearColor(0.5f, 0.5f, 0.5f, 1f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             shaderProgram.UseShader();
@@ -191,8 +226,9 @@ namespace OpenGL
 
 
             Matrix4 wall1_model = Matrix4.Identity;
-            Vector3 wall1_position = camera.position + camera.front * 10f;
-            Matrix4 wall1_scale = Matrix4.CreateScale(5f, 8f, 1f);
+			Vector3 a = new Vector3(0f, -1f, -1f);
+            Vector3 wall1_position = a; 
+            Matrix4 wall1_scale = Matrix4.CreateScale(7f, 7f, 7f);
             Matrix4 wall1_translation = Matrix4.CreateTranslation(wall1_position);
             wall1_model *= wall1_scale * wall1_translation;
             int wall1_modelLocation = GL.GetUniformLocation(shaderProgram.shaderHandle, "model");
@@ -201,13 +237,25 @@ namespace OpenGL
 
 
 
-            Matrix4 ship_model = Matrix4.Identity;
-            Vector3 shipPosition = camera.position + camera.front * 10f;
+			Matrix4 wall2_model = Matrix4.Identity;
+			Vector3 b = new Vector3(0f, -1f, 1f);
+			Vector3 wall2_position = b;
+			Matrix4 wall2_scale = Matrix4.CreateScale(7f, 7f, 7f);
+			Matrix4 wall2_translation = Matrix4.CreateTranslation(wall2_position);
+			wall2_model *= wall2_scale * wall2_translation;
+			int wall2_modelLocation = GL.GetUniformLocation(shaderProgram.shaderHandle, "model");
+			GL.UniformMatrix4(wall2_modelLocation, true, ref wall2_model);
+			Wall2.draw();
+
+
+
+			Matrix4 ship_model = Matrix4.Identity;
+            Vector3 shipPosition = camera.position + camera.front * 1.5f;
             Matrix4 ship_translation = Matrix4.CreateTranslation(shipPosition);
             ship_model *= ship_translation;
             int ship_modelLocation = GL.GetUniformLocation(shaderProgram.shaderHandle, "model");
             GL.UniformMatrix4(ship_modelLocation, true, ref ship_model);
-            Ship.draw();
+            //Ship.draw();
 
 
             Context.SwapBuffers();
