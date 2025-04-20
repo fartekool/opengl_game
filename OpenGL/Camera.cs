@@ -66,7 +66,7 @@ namespace OpenGL
                 MathHelper.DegreesToRadians(60f), // FOV
                 AspectRatio,                      // Aspect Ratio
                 0.1f,                             // Near clipping plane
-                100.0f                            // Far clipping plane
+                1000.0f                            // Far clipping plane
             );
         }
 
@@ -77,30 +77,30 @@ namespace OpenGL
             this.target = targetObject;
 
             // --- Mouse Input for Orbiting ---
-            //if (firstMove)
-            //{
-            //    lastMousePos = new Vector2(mouse.X, mouse.Y);
-            //    firstMove = false;
-            //}
-            //else
-            //{
-            //    // Calculate the mouse delta since the last frame
-            //    var deltaX = mouse.X - lastMousePos.X;
-            //    var deltaY = mouse.Y - lastMousePos.Y;
-            //    lastMousePos = new Vector2(mouse.X, mouse.Y);
+            if (firstMove)
+            {
+                lastMousePos = new Vector2(mouse.X, mouse.Y);
+                firstMove = false;
+            }
+            else
+            {
+                // Calculate the mouse delta since the last frame
+                var deltaX = mouse.X - lastMousePos.X;
+                var deltaY = mouse.Y - lastMousePos.Y;
+                lastMousePos = new Vector2(mouse.X, mouse.Y);
 
-            //    // Adjust orbit angles based on mouse movement
-            //    // Invert yaw delta if needed based on preference
-            //    currentYaw -= deltaX * yawSensitivity; // Yaw changes horizontal orbit
-            //    currentPitch -= deltaY * pitchSensitivity; // Pitch changes vertical orbit
+                // Adjust orbit angles based on mouse movement
+                // Invert yaw delta if needed based on preference
+                currentYaw -= deltaX * yawSensitivity; // Yaw changes horizontal orbit
+                currentPitch -= deltaY * pitchSensitivity; // Pitch changes vertical orbit
 
-            //    // Clamp the pitch angle to prevent flipping upside down
-            //    // Allow slightly more than 90 up/down if desired, but limit it
-            //    currentPitch = MathHelper.Clamp(currentPitch, MathHelper.DegreesToRadians(-85.0f), MathHelper.DegreesToRadians(85.0f));
+                // Clamp the pitch angle to prevent flipping upside down
+                // Allow slightly more than 90 up/down if desired, but limit it
+                currentPitch = MathHelper.Clamp(currentPitch, MathHelper.DegreesToRadians(-85.0f), MathHelper.DegreesToRadians(85.0f));
 
-            //    // Optional: Wrap Yaw angle to keep it within 0-360 degrees (0-2PI radians)
-            //    // currentYaw = MathHelper.WrapAngle(currentYaw);
-            //}
+                // Optional: Wrap Yaw angle to keep it within 0-360 degrees (0-2PI radians)
+                // currentYaw = MathHelper.WrapAngle(currentYaw);
+            }
 
             // --- Position Calculation (done in GetViewMatrix/CalculateCameraPosition) ---
             // CalculateCameraPosition(target.Position); // Called within GetViewMatrix now

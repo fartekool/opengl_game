@@ -8,11 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CjClutter.ObjLoader" Version="1.0.0" />
     <PackageReference Include="OpenTK" Version="4.8.2" />
     <PackageReference Include="StbImageSharp" Version="2.30.15" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Models\" />
     <Folder Include="Textures\" />
     <Folder Include="Shaders\" />
   </ItemGroup>

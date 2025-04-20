@@ -96,3 +96,4 @@ C:\Users\levon\Desktop\gabeopengl\opengl_game\OpenGL\obj\Debug\net8.0\refint\Ope
 C:\Users\levon\Desktop\gabeopengl\opengl_game\OpenGL\obj\Debug\net8.0\OpenGL.pdb
 C:\Users\levon\Desktop\gabeopengl\opengl_game\OpenGL\obj\Debug\net8.0\OpenGL.genruntimeconfig.cache
 C:\Users\levon\Desktop\gabeopengl\opengl_game\OpenGL\obj\Debug\net8.0\ref\OpenGL.dll
+C:\Users\levon\Desktop\gabeopengl\opengl_game\OpenGL\bin\Debug\net8.0\CjClutter.ObjLoader.Loader.dll
