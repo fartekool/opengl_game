@@ -1,9 +1,4 @@
-﻿
-
-
-
-
-using OpenGL;
+﻿using OpenGL;
 
 class Program
 {
