@@ -216,11 +216,11 @@ namespace OpenGL
             Vector3 bottomPos = new Vector3(0, -halfSize, 0);
 
             Vector3 frontRot = new Vector3(0, 0, 0); // Faces -Z
-            Vector3 backRot = new Vector3(0, MathHelper.DegreesToRadians(180), 0); // Faces +Z
-            Vector3 leftRot = new Vector3(0, MathHelper.DegreesToRadians(90), 0); // Faces -X
-            Vector3 rightRot = new Vector3(0, MathHelper.DegreesToRadians(-90), 0); // Faces +X
-            Vector3 topRot = new Vector3(MathHelper.DegreesToRadians(-90), 0, 0); // Faces +Y
-            Vector3 bottomRot = new Vector3(MathHelper.DegreesToRadians(90), 0, 0); // Faces -Y
+            Vector3 backRot = new Vector3(0, MathHelper.DegreesToRadians(180), 0); 
+            Vector3 leftRot = new Vector3(0, MathHelper.DegreesToRadians(90), 0); 
+            Vector3 rightRot = new Vector3(0, MathHelper.DegreesToRadians(-90), 0);
+            Vector3 topRot = new Vector3(MathHelper.DegreesToRadians(-90), 0, 0); 
+            Vector3 bottomRot = new Vector3(MathHelper.DegreesToRadians(90), 0, 0);
 
             Vector3 wallScale = new Vector3(skyboxSize, skyboxSize, 1);
 
@@ -286,30 +286,30 @@ namespace OpenGL
             Matrix4 projection = camera.GetProjection();
 
 
-            shaderProgram.SetMatrix4("view", view, true);
-            shaderProgram.SetMatrix4("projection", projection, true);
+            shaderProgram.SetMatrix4("view", view);
+            shaderProgram.SetMatrix4("projection", projection);
 
 
             Matrix4 shipModelMatrix = Ship.GetModelMatrix();
-            shaderProgram.SetMatrix4("model", shipModelMatrix, true);
+            shaderProgram.SetMatrix4("model", shipModelMatrix);
             Ship.draw();
 
 
             foreach (GameObject asteroid in asteroids)
             {
                 Matrix4 asteroidModelMatrix = asteroid.GetModelMatrix();
-                shaderProgram.SetMatrix4("model", asteroidModelMatrix, true);
+                shaderProgram.SetMatrix4("model", asteroidModelMatrix);
                 asteroid.draw();
             }
 
             GL.DepthMask(false);
 
-            shaderProgram.SetMatrix4("model", Wall1.GetModelMatrix(), true); Wall1.draw();
-            shaderProgram.SetMatrix4("model", Wall2.GetModelMatrix(), true); Wall2.draw();
-            shaderProgram.SetMatrix4("model", Wall3.GetModelMatrix(), true); Wall3.draw();
-            shaderProgram.SetMatrix4("model", Wall4.GetModelMatrix(), true); Wall4.draw();
-            shaderProgram.SetMatrix4("model", Wall5.GetModelMatrix(), true); Wall5.draw();
-            shaderProgram.SetMatrix4("model", Wall6.GetModelMatrix(), true); Wall6.draw();
+            shaderProgram.SetMatrix4("model", Wall1.GetModelMatrix()); Wall1.draw();
+            shaderProgram.SetMatrix4("model", Wall2.GetModelMatrix()); Wall2.draw();
+            shaderProgram.SetMatrix4("model", Wall3.GetModelMatrix()); Wall3.draw();
+            shaderProgram.SetMatrix4("model", Wall4.GetModelMatrix()); Wall4.draw();
+            shaderProgram.SetMatrix4("model", Wall5.GetModelMatrix()); Wall5.draw();
+            shaderProgram.SetMatrix4("model", Wall6.GetModelMatrix()); Wall6.draw();
 
             GL.DepthMask(true);
 
@@ -325,16 +325,25 @@ namespace OpenGL
                 return;
             }
 
+            KeyboardState input = KeyboardState;
+
             if (isGameOver)
             {
-                Close();
-                return;
+                if (input.IsKeyDown(Keys.Escape))
+                {
+                    Close();
+                    return;
+                }
+                if (input.IsKeyDown(Keys.Space))
+                {
+                    RestartGame();
+                }
             }
 
 
             float deltaTime = (float)args.Time;
 
-            KeyboardState input = KeyboardState;
+            
             MouseState mouse = MouseState;
 
             if (input.IsKeyDown(Keys.Escape))
@@ -406,15 +415,24 @@ namespace OpenGL
                 if (distanceSq < radiiSumSq)
                 {
                     isGameOver = true;
-                    Console.WriteLine("Game Over! Collision detected."); // Выводим сообщение
                     break;
                 }
             }
         }
         private void SpawnAsteroid()
         {
-            float xPos = (float)(random.NextDouble() * 2.0 - 1.0) * spawnRangeX; 
-            float zPos = (float)(random.NextDouble() * 2.0 - 1.0) * spawnRangeZ; 
+            float xPos;
+            float zPos;
+            if (random.NextDouble() > 0.5)
+            {   
+                xPos = (float)(random.NextDouble() * 2.0 - 1.0) * spawnRangeX;
+                zPos = (float)(random.NextDouble() * 2.0 - 1.0) * spawnRangeZ;
+            }
+            else
+            {
+                xPos = (float)(random.NextDouble() * 2.0 - 1.0) * 50;
+                zPos = (float)(random.NextDouble() * 2.0 - 1.0) * 50;
+            }
             Vector3 initialPosition = new Vector3(xPos, spawnHeight, zPos);
 
             Vector3 initialRotation = new Vector3(
@@ -448,5 +466,26 @@ namespace OpenGL
                 camera.AspectRatio = (float)width / height;
             }
         }
+
+        private void RestartGame()
+        {
+            isGameOver = false;
+
+
+            // --- Удаляем старые астероиды ---
+            foreach (GameObject asteroid in asteroids)
+            {
+                asteroid.del_resources();
+            }
+            asteroids.Clear();
+
+            asteroids = new List<GameObject>();
+
+            Ship.Position = new Vector3(0, 0, 0);
+            Ship.Rotation = new Vector3(MathHelper.DegreesToRadians(90f), MathHelper.DegreesToRadians(180f), 0);
+            Ship.Scale = new Vector3(0.2f, 0.2f, 0.2f);
+
+        }
+
     }
 }
